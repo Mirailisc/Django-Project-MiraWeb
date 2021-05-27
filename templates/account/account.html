@@ -1,0 +1,128 @@
+{% include 'post_index.html' %}
+{% load static %}
+{% block content %}
+<title>{{ user.first_name }} {{user.last_name}} | MiraWeb</title>
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;900&display=swap');
+
+    body {
+        background: #EEEEEE;
+        font-family: 'Poppins';
+    }
+
+    .Profile {
+        margin-top: 3rem;
+        text-align: center;
+        padding-block: 3rem;
+        background: #FFF;
+        border: none;
+        border-radius: 30px;
+    }
+
+    .Post {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .card {
+        margin-top: 10px;
+        background: #fff;
+        border: none;
+        border-radius: 10px;
+        width: 50vh;
+    }
+
+    .info {
+        margin-top: 10px;
+    }
+
+    .link {
+        margin-top: 10px;
+    }
+
+    .head {
+        font-size: 24px;
+        font-weight: 500;
+    }
+</style>
+
+<body>
+</body>
+<div class="container">
+    <div class="Profile">
+        <h2>
+            User Profile
+        </h2>
+
+        <p class="profile">Name: {{ user.first_name }} {{ user.last_name }}</p>
+        <p class="profile">Email Address: {{ user.email }}</p>
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            Edit Profile
+        </button>
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Edit Profile</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col">
+                                <form class="container" action="{% url 'edit_firstname' user.id %}" method="get">
+                                    <p class="head">Firstname</p>
+                                    <div class="mb-3">
+                                        <label for="" class="form-label">Current: {{ user.first_name }}</label>
+                                        <input type="text" class="form-control" name="firstname"
+                                            placeholder="Please enter a new firstname.">
+                                    </div>
+                                    <div class="modal-submit">
+                                        <button type="submit" class="btn btn-primary">Save</button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col">
+                                <form class="container" action="{% url 'edit_lastname' user.id %}" method="get">
+                                    <p class="head">Lastname</p>
+                                    <div class="mb-3">
+                                        <label for="" class="form-label">Current: {{ user.last_name }}</label>
+                                        <input type="text" class="form-control" name="lastname"
+                                            placeholder="Please enter a new lastname.">
+                                    </div>
+                                    <div class="modal-submit">
+                                        <button type="submit" class="btn btn-primary">Save</button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col">
+                                <form class="container" action="{% url 'edit_email' user.id %}" method="get">
+                                    <p class="head">Email</p>
+                                    {% for messages in messages %}
+                                        <div class="alert alert-danger" role="alert">
+                                            {{messages}}
+                                        </div>
+                                    {% endfor %}
+                                    <div class="mb-3">
+                                        <label for="" class="form-label">Current: {{ user.email }}</label>
+                                        <input type="email" class="form-control" name="email"
+                                            placeholder="Please enter a new email address.">
+                                    </div>
+                                    <div class="modal-submit">
+                                        <button type="submit" class="btn btn-primary">Save</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

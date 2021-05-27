@@ -1,0 +1,232 @@
+{% include 'post_index.html' %}
+{% load static %}
+{% load humanize %}
+{% block content %}
+<title>MiraWeb</title>
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;900&display=swap');
+
+    body {
+        background: #EEEEEE;
+        background-size: cover;
+        background-position: center;
+        font-family: 'Poppins';
+    }
+
+    .welcome {
+        font-size: 24px;
+        margin-top: 10px;
+        text-align: center;
+    }
+
+    .Post_add {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .container {
+        margin-top: 10px;
+    }
+
+    .Post {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .card {
+        margin-top: 10px;
+        background: #fff;
+        border: none;
+        border-radius: 10px;
+        width: 50vh;
+    }
+
+    .info {
+        margin-top: 10px;
+    }
+
+    .link {
+        margin-top: 10px;
+    }
+
+    .credit {
+        text-align: center;
+        margin-top: 9rem;
+    }
+
+    .User {
+        color: #000000;
+        text-decoration: none;
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .btn.btn-success {
+        border: none;
+        border-radius: 10px;
+        background: #91EEE4;
+    }
+
+    .btn.btn-danger {
+        border: none;
+        border-radius: 10px;
+        background: #FF9F9F;
+    }
+
+    .btn.btn-success:hover {
+        background: #6EBDB5;
+    }
+
+    .btn.btn-danger:hover {
+        background: #DC8484;
+    }
+</style>
+
+<body>
+    <h2 class="welcome">Welcome, {{ user.first_name }}</h2>
+    <div class="Post_add">
+        <!-- Button trigger modal -->
+        <div class="trigger">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                Add Post
+            </button>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">Create Your Post</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form">
+                            <form class="container" action="{% url 'add_feed' %}" method="get">
+                                <div class="mb-3">
+                                    <label for="" class="form-label">Post Title</label>
+                                    <input type="text" class="form-control" name="title">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="" class="form-label">Post Description</label>
+                                    <input type="text" class="form-control" name="info">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="" class="link form-label">Link</label>
+                                    <input type="url" class="form-control" name="link">
+                                </div>
+                                <div class="modal-submit">
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="Post">
+            {% for Article in post %}
+            <div class="card card-block">
+                <div class="card-body">
+                    <div>
+                        <div class="User">
+                            <p class="col card-text">{{ Article.create_date|naturaltime }}</p>
+                            <p class="User col card-text">{{ Article.author }}</p>
+                        </div>
+                        <h5 class="card-title">{{ Article.article_name }}</h5>
+                    </div>
+                    <p class="card-text">{{ Article.articlk_info }}</p>
+                    <a href="{{ Article.article_link }}" , target="_blank" class="card-link">Link</a>
+                    {% if request.user == Article.author %}
+                    <div class="option">
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                            data-bs-target="#exampleModal">
+                            Edit
+                        </button>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                            aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Edit Post</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <h5>Post Title</h5>
+                                        </div>
+                                        <div class="row">
+                                            <form class="container" action="{% url 'edit_title' Article.id %}"
+                                                method="get">
+                                                <div class="mb-3">
+                                                    <label for="" class="form-label">Current: {{ Article.article_name }}</label>
+                                                    <input type="text" class="form-control" name="title"
+                                                        placeholder="Please enter a new title.">
+                                                </div>
+                                                <div class="modal-submit">
+                                                    <button type="submit" class="btn btn-primary">Save</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="row">
+                                            <h5 class="info">Post Description</h5>
+                                        </div>
+                                        <div class="row">
+                                            <form class="container" action="{% url 'edit_info' Article.id %}"
+                                                method="get">
+                                                <div class="mb-3">
+                                                    <label for="" class="form-label">Current: {{ Article.articlk_info }}</label>
+                                                    <input type="text" class="form-control" name="info"
+                                                        placeholder="Please enter a new description.">
+                                                </div>
+                                                <div class="modal-submit">
+                                                    <button type="submit" class="btn btn-primary">Save</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="row">
+                                            <h5 class="link">Post Link</h5>
+                                        </div>
+                                        <div class="row">
+                                            <form class="container" action="{% url 'edit_link' Article.id %}"
+                                                method="get">
+                                                <div class="mb-3">
+                                                    <label for="" class="form-label">Current: {{ Article.article_link }}</label>
+                                                    <input type="text" class="form-control" name="link"
+                                                        placeholder="Please enter a new link.">
+                                                </div>
+                                                <div class="modal-submit">
+                                                    <button type="submit" class="btn btn-primary">Save</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="{% url 'post_delete' Article.id %}" class="btn btn-danger">Delete</a>
+                    </div>
+                    {% else %}
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="credit">
+            <p>© 2021 Phubordin Poolnai (Mira)</p>
+        </div>
+    </div>
+</body>
+{% endblock %}

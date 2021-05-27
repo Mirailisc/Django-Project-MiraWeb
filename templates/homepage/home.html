@@ -1,0 +1,93 @@
+{% include 'index.html' %}
+{% load static %}
+{% block content %}
+<title>MiraDev</title>
+<!--homepage style-->
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;900&display=swap');
+
+  body {
+    background: url('static/Background.jpg');
+    background-size: cover;
+    background-position: center;
+    font-family: 'Poppins';
+  }
+
+  .container {
+    padding-top: 10rem;
+    padding: auto;
+    margin: auto;
+  }
+
+  .title {
+    font-size: 48px;
+    font-weight: bolder;
+  }
+
+  .content-title {
+    font-weight: 500;
+    margin-right: 1rem;
+  }
+
+  .btn {
+    font-size: 24px;
+    font-weight: 500;
+    margin-left: 30px;
+    background: #FF6060;
+    border: none;
+  }
+
+  .btn:hover {
+    background: #DB4E4E;
+    box-shadow: 0px 0px 7px 0px black;
+  }
+
+  .btn:active {
+    background: #FF9F9F;
+  }
+
+  .credit {
+    text-align: center;
+    margin-top: 9rem;
+  }
+</style>
+
+<div class="homepage">
+  <div class="container">
+    <div class="row no-gutters align-items-center">
+      <div class="col-md">
+        {% if user.is_authenticated %}
+        <div class="menu-image h-100 d-flex align-items-end">
+          <img src="{% static 'Avatar.png' %}" class="img-fluid" alt="menu image">
+        </div>
+      </div>
+      <div class="col-md">
+        <div class="text flex-grow-1 py-4 px-5">
+          <h2 class="title text-end">Welcome, {{ user.first_name }}</h2>
+          <div class="content d-flex justify-content-end">
+          </div>
+          <a class="btn btn-primary float-end" href="{% url 'feed' %}">See Posts</a>
+        </div>
+      </div>
+      {% else %}
+      <div class="menu-image h-100 d-flex align-items-end">
+        <img src="{% static 'Avatar.png' %}" class="img-fluid" alt="menu image">
+      </div>
+    </div>
+    <div class="col-md">
+      <div class="text flex-grow-1 py-4 px-5">
+        <h2 class="title text-end">Welcome To MiraWeb</h2>
+        <div class="content d-flex justify-content-end">
+          <a class="btn btn-primary float-end" href="{% url 'login' %}">Sign-in</a>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+
+  <div class="credit">
+    <p>© 2021 Phubordin Poolnai (Mira)</p>
+  </div>
+</div>
+</div>
+{% endblock %}

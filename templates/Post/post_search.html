@@ -1,0 +1,118 @@
+{% include 'post_index.html' %}
+{% load static %}
+{% load humanize %}
+{% block content %}
+<title>MiraFeeds</title>
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;900&display=swap');
+
+    body {
+        background: #EEEEEE;
+        background-size: cover;
+        background-position: center;
+        font-family: 'Poppins';
+    }
+
+    .welcome {
+        font-size: 24px;
+        margin-top: 10px;
+        text-align: center;
+    }
+
+    .Post_add {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .container {
+        margin-top: 10px;
+    }
+
+    .Post {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .card {
+        margin-top: 10px;
+        background: #fff;
+        border: none;
+        border-radius: 10px;
+        width: 50vh;
+    }
+
+    .info {
+        margin-top: 10px;
+    }
+
+    .link {
+        margin-top: 10px;
+    }
+
+    .credit {
+        text-align: center;
+        margin-top: 9rem;
+    }
+
+    .User {
+        color: #000000;
+        text-decoration: none;
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .header {
+        margin-top: 2rem;
+        font-size: 24px;
+        text-align: center;
+    }
+
+    .header-btn {
+        display: flex;
+        padding: 10px;
+        align-items: center;
+        justify-content: center;
+        color: #00ADB5;
+        text-decoration: none;
+    }
+
+    .header-btn:hover {
+        color: #00949B;
+    }
+</style>
+
+<body>
+    {% if search %}
+    <p class="header">You Searched For {{ search }}</p>
+    {% for result in result %}
+    <div class="container">
+        <div class="Post">
+            <div class="card card-block">
+                <div class="card-body">
+                    <div>
+                        <div class="User">
+                            <p class="col card-text">{{ result.create_date|naturaltime }}</p>
+                            <p class="User col card-text">{{ result.author }}</p>
+                        </div>
+                        <h5 class="card-title">{{ result.article_name }}</h5>
+                    </div>
+                    <p class="card-text">{{ result.articlk_info }}</p>
+                    <a href="{{ result.article_link }}" , target="_blank" class="card-link">Link</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    {% else %}
+    <p class="header">You didn't search for anything</p>
+    <a class="header-btn" href="{% url 'feed' %}">Click here to return.</a>
+    {% endif %}
+    <div class="credit">
+        <p>© 2021 Phubordin Poolnai (Mira)</p>
+    </div>
+</body>
+{% endblock %}
